@@ -1,62 +1,71 @@
-
 class TaTeTi():
-
-    def __init__(self, iniciar = None):
-        self.board_i= iniciar
-        self.board = [' ' for _ in range(9)]
+    def __init__(self,valor=None):
+        self.board=[' ' for _ in range(9)]
+        self.inicio=valor
 
     def full(self):
         contador=0
-        for i in self.board_i:
+        for i in self.inicio:
             if i != ' ':
-                contador = contador +1
+                contador += 1
         if contador == 9:
             return True
         else:
             return False
 
     def win(self):
-        contador_x = 0
-        contador_o = 0
-        cadena = ''.join(self.board_i)
-        fila = 3
-        self.board_i = [ [  cadena[j+(i*3)]  for j in range(fila) ] for i in range(fila)]
-        j=0
-        for i in range(3):
-            if self.board_i[0][i] == 'x':
-                contador_x= contador_x +1
-            if self.board_i[0][i] == 'o':
-                contador_o = contador_o +1
-            if self.board_i[1][i] == 'x':
-                contador_x= contador_x +1
-            if self.board_i[1][i] == 'o':
-                contador_o = contador_o +1
-            if self.board_i[2][i] == 'x':
-                contador_x= contador_x +1
-            if self.board_i[2][i] == 'o':
-                contador_o = contador_o +1
-        if contador_x == 3 or contador_o == 3:
-            j=j+1
-
-        for i in range(3):
-            if self.board_i[i][0] == 'x':
-                contador_x = contador_x + 1
-            if self.board_i[i][0] == 'o':
-                contador_o = contador_o + 1
-            if self.board_i[i][1] == 'x':
-                contador_x = contador_x + 1
-            if self.board_i[i][1] == 'o':
-                contador_o = contador_o + 1
-            if self.board_i[i][2] == 'x':
-                contador_x = contador_x + 1
-            if self.board_i[i][2] == 'o':
-                contador_o = contador_o + 1
-
-        if contador_x == 3 or contador_o == 3:
-            j=j+1
-        if j == 1:
+        cont=0
+        cont1=0
+        for i in self.inicio:
+            if i == 'x':
+                cont+=1
+    
+            if i == 'o':
+                cont1+=1
+            
+        if cont == 0 or cont1 == 0:
             return True
+        
         else:
             return False
+            
+    def validate(self,position):
+        if 'x' in self.inicio[position-1] or 'o' in self.inicio[position-1]:
+            return False
+        else:
+            return True
+            
+    def assign(self,position,piece):
+        self.board=self.inicio
+        if self.validate(position):
+            cont=1
+            for i in self.board:
+                if cont == position:
+                    self.board[cont-1]=piece
+                cont=cont+1
+            return self.board
+            
+        else:
+            raise Exception
 
+    def draw_board(self):
+        self.board=self.inicio
+        cont=1
+        for i in self.board:
+            if i == ' ':
+              self.board[cont-1]=str(cont)
+            cont=cont+1
 
+        printing = "\n"
+        for num in range(9):
+            if self.board[num] != " ":
+                printing += " " + self.board[num] + " "
+            else:
+                printing += " " + str(1+num) + " "
+            if num == 2 or num == 5:
+                printing += "\n---+---+---\n"
+            elif num == 8:
+                printing += "\n"
+            else:
+                printing += "|"
+        return printing
